@@ -5,8 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
-import plotly.express as px
-import plotly.graph_objects as go
 import random
 
 DATA_PATH = "synthetic_dog_breed_health_data.csv"
@@ -330,3 +328,4 @@ if uploaded_file is not None:
             method = st.session_state.get("input_method", "generated")
             show_prediction_results(input_data, model, label_encoders, method)
             
+
