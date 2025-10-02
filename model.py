@@ -309,49 +309,6 @@ def show_prediction_results(input_data, model, label_encoders, input_method="gen
     with col_res3:
         st.metric("Риск проблем", f"{probabilities[0]*100:.1f}%")
     
-    # График вероятностей
-    fig = go.Figure(data=[
-        go.Bar(
-            x=['Нездоровая', 'Здоровая'],
-            y=[probabilities[0]*100, probabilities[1]*100],
-            marker_color=['#ff6b6b', '#51cf66'],
-            text=[f'{probabilities[0]*100:.1f}%', f'{probabilities[1]*100:.1f}%'],
-            textposition='auto',
-            textfont=dict(size=14, color='white')
-        )
-    ])
-    fig.update_layout(
-        title="Вероятность состояния здоровья",
-        yaxis_title="Вероятность (%)",
-        showlegend=False,
-        height=300
-    )
-    st.plotly_chart(fig, use_container_width=True)
-    
-    # Важность признаков
-    st.subheader("🎯 Топ-10 важных признаков")
-    feature_names = list(input_data.keys())
-    importances = model.feature_importances_
-    importance_df = pd.DataFrame({
-        'Признак': feature_names,
-        'Важность': importances
-    }).sort_values('Важность', ascending=False).head(10)
-    
-    fig_imp = px.bar(
-        importance_df,
-        x='Важность',
-        y='Признак',
-        orientation='h',
-        color='Важность',
-        color_continuous_scale='viridis',
-        title="Влияние признаков на предсказание"
-    )
-    fig_imp.update_layout(
-        yaxis={'categoryorder':'total ascending'},
-        height=400
-    )
-    st.plotly_chart(fig_imp, use_container_width=True)
-
 uploaded_file = pd.read_csv(DATA_PATH)
 
 if uploaded_file is not None:
@@ -373,11 +330,3 @@ if uploaded_file is not None:
             method = st.session_state.get("input_method", "generated")
             show_prediction_results(input_data, model, label_encoders, method)
             
-            # Кнопка для очистки результатов
-            if st.button("🔄 Очистить результаты"):
-                if "generated_dog" in st.session_state:
-                    del st.session_state["generated_dog"]
-                if "input_method" in st.session_state:
-                    del st.session_state["input_method"]
-                st.rerun()
-
