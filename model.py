@@ -286,29 +286,7 @@ def create_manual_input_form():
             st.rerun()
 
 # Функция отображения результатов предсказания
-def show_prediction_results(input_data, model, label_encoders, input_method="generated"):    
-    display_data = {}
-    
-    # Отображаем в колонках для лучшей читаемости
-    col1, col2, col3 = st.columns(3)
-    items = list(display_data.items())
-    
-    with col1:
-        for i in range(0, len(items), 3):
-            if i < len(items):
-                st.write(f"**{items[i][0]}:** {items[i][1]}")
-    
-    with col2:
-        for i in range(1, len(items), 3):
-            if i < len(items):
-                st.write(f"**{items[i][0]}:** {items[i][1]}")
-    
-    with col3:
-        for i in range(2, len(items), 3):
-            if i < len(items):
-                st.write(f"**{items[i][0]}:** {items[i][1]}")
-    
-    # Кодируем данные для предсказания
+def show_prediction_results(input_data, model, label_encoders, input_method="generated"):        
     encoded_data = input_data.copy()
     for col, le in label_encoders.items():
         if col in encoded_data:
@@ -402,3 +380,4 @@ if uploaded_file is not None:
                 if "input_method" in st.session_state:
                     del st.session_state["input_method"]
                 st.rerun()
+
